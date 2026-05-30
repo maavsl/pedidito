@@ -56,6 +56,15 @@ body{
     font-weight:bold;
 }
 
+#emailError{
+    display:none;
+    color:red;
+    font-weight:bold;
+    margin-top:-12px;
+    margin-bottom:14px;
+    font-size:14px;
+}
+
 /* APP */
 
 #app{
@@ -170,8 +179,11 @@ td{
 
         <h1>PEDIDITO 🌈</h1>
 
-       <input class="nombre" type="text" id="nombre" placeholder="Nombre">
+<input class="nombre" type="text" id="nombre" placeholder="Nombre">
 <div id="nombreError">Pon un nombre</div>
+
+<input class="nombre" type="email" id="email" placeholder="Email">
+<div id="emailError">Pon un email válido</div>
 
         <table>
 
@@ -280,7 +292,10 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbya-RezXL0Koe0DsfhsI
 function enviar(){
 
     const nombreInput = document.getElementById("nombre");
+    const emailInput = document.getElementById("email");
+
     const nombre = nombreInput.value.trim();
+    const email = emailInput.value.trim();
 
     if(nombre === ""){
         nombreInput.style.border = "2px solid red";
@@ -291,8 +306,20 @@ function enviar(){
     nombreInput.style.border = "none";
     document.getElementById("nombreError").style.display = "none";
 
+    const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if(!emailValido){
+        emailInput.style.border = "2px solid red";
+        document.getElementById("emailError").style.display = "block";
+        return;
+    }
+
+    emailInput.style.border = "none";
+    document.getElementById("emailError").style.display = "none";
+
     const datos = {
         nombre: nombre,
+        email: email,
         c: document.getElementById("c").value,
         k: document.getElementById("k").value,
         m: document.getElementById("m").value,
